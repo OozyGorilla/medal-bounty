@@ -124,12 +124,12 @@
 
         @font-face {
             font-family: 'Industry Medium';
-            src: url('https://theredgear.github.io/medal-bounty/assets/fonts/Industry-Medium.otf') format('opentype');
+            src: url('https://theredgear.github.io/medal-bounty/assets/fonts/IndustryMedium.otf') format('opentype');
         }
 
         @font-face {
             font-family: 'Industry Book';
-            src: url('https://theredgear.github.io/medal-bounty/assets/fonts/Industry-Book.otf') format('opentype');
+            src: url('https://theredgear.github.io/medal-bounty/assets/fonts/IndustryBook.otf') format('opentype');
         }
 
 
@@ -1183,7 +1183,7 @@
             let fireteamSkillRank = 0;
             let lastAction = null;
             let lastPoints = 0;
-            let currentBorderImageSrc = 'assets/Borders/unrated.png'; // Initialize current border image source
+            let currentBorderImageSrc = 'assets/Borders/NoRanked.png'; // Initialize current border image source
             let lastButtonPress = null; // Tracks the last button press (win or loss)
             let objectiveHistory = [];
             let historyIndex = -1;
@@ -1383,11 +1383,11 @@
             const updateFireteamSkillRankBackground = (state) => {
                 const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
                 if (state === "win") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/Win-Button.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/WinButton.png')";
                 } else if (state === "loss") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/Loss-Button.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/LossButton.png')";
                 } else {
-                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/Neutral-Button.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('https://theredgear.github.io/medal-bounty/assets/borders/NeutralButton.png')";
                 }
                 fireteamState = state; // Update the state
             };

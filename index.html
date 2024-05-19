@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en" data-darkreader-mode="dynamic" data-darkreader-scheme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medal Bounty</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: 'Industry Medium', sans-serif;
+        }
+
+        .game-container {
+            text-align: center;
+            margin-top: 150px;
+            /* Increase the top margin further */
+        }
+
+        .fireteam-skill-rank {
+            transform-origin: center;
+            /* Ensure the transform origin is centered */
+            position: relative;
+            z-index: 4;
+            bottom: 25px;
+            font-size: 21px;
+            color: white;
+            background-image: url('assets/borders/Score borders/Medal-Bounty-sR.png');
+            /* Default background */
+            background-size: cover;
+            background-position: center;
+            background-color: transparent;
+            background-size: 150px 75px;
+            background-repeat: no-repeat;
+            padding: 20px 10px;
+        }
+
+        #image-description {
+            margin-bottom: 20px;
+        }
+
+        .buttons,
+        .save-load,
+        .scoreboard,
+        .difficulty-buttons {
+            margin-top: 20px;
+            /* Ensure enough space for the buttons */
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Industry Medium', sans-serif;
+        }
+
+        .medal-display,
+        .medal-description {
+            font-family: 'Industry Book', sans-serif;
+        }
+
+        .scoreboard h2 {
+            margin-bottom: 10px;
+        }
+
+        .scoreboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .scoreboard li {
+            margin-bottom: 5px;
+        }
+
+        .toggle-button {
+            cursor: pointer;
+        }
+
+        /* Difficulty button states */
+        .toggle-button.normal-on {
+            background-color: #00A78E;
+            color: white;
+        }
+
+        .toggle-button.normal-off {
+            background-color: #007564;
+            color: rgb(232, 230, 227);
+            opacity: 0.3;
+        }
+
+        .toggle-button.heroic-on {
+            background-color: #26679D;
+            color: white;
+        }
+
+        .toggle-button.heroic-off {
+            background-color: #1A4568;
+            color: rgb(232, 230, 227);
+            opacity: 0.3;
+        }
+
+        .toggle-button.legendary-on {
+            background-color: #7600CC;
+            color: white;
+        }
+
+        .toggle-button.legendary-off {
+            background-color: #310055;
+            color: rgb(232, 230, 227);
+            opacity: 0.3;
+        }
+
+        .toggle-button.mythic-on {
+            background-color: #C86700;
+            color: white;
+        }
+
+        .toggle-button.mythic-off {
+            background-color: #6A3800;
+            color: rgb(232, 230, 227);
+            opacity: 0.3;
+        }
+
+
+        @font-face {
+            font-family: 'Industry Medium';
+            src: url('assets/fonts/Industry-Medium.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'Industry Book';
+            src: url('assets/fonts/Industry-Book.otf') format('opentype');
+        }
+
+        /* New CSS rule to resize the slideshow image */
+        .slideshow-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-top: 0px;
+        }
+
+        #slideshow-image {
+            width: 160px;
+            height: 160px;
+            position: relative;
+            z-index: 3;
+            /* Ensure this is above the spinning ring */
+        }
+
+        .border-image {
+            width: 275px;
+            height: 275px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .spinning-ring {
+            width: 275px;
+            height: 275px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            /* Ensure this is above the border image but below the slideshow image */
+            animation: spin infinite linear;
+        }
+
+        @keyframes spin {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Disabled button styling */
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #objective-info {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #created-by {
+            color: fff;
+            opacity: 0.3;
+            margin-bottom: -20px;
+            transform: translate(0%, -120%);
+            /* Adjust as needed for spacing */
+        }
+
+        #created-by a {
+            color: white;
+
+        }
+
+        @keyframes zoomInOut {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .zoom-animation {
+            animation: zoomInOut 0.3s ease-in-out;
+            transform-origin: center;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -200px;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .shine-animation {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-animation::after,
+        #slideshow-image:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+            background-size: 200px 100%;
+            animation: shine 1s ease-in-out;
+            z-index: 4;
+            /* Ensure the shine effect is on top */
+            pointer-events: none;
+            /* Ensure the shine effect does not interfere with other elements */
+        }
+
+        .lobby-code-section {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lobby-code-section button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Industry Medium', sans-serif;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="slideshow-container">
+            <img id="border-image" src="assets/Borders/unrated.png" alt="Border Image" class="border-image">
+            <img id="spinning-ring" src="" alt="Spinning Ring" class="spinning-ring">
+            <img id="slideshow-image" src="" alt="Slideshow Image">
+        </div>
+        <div id="fireteam-skill-rank" class="fireteam-skill-rank">Fireteam Skill Rank: 0 sR</div>
+        <div id="created-by">
+            <a style="text-decoration:none" href="https://www.twitch.tv/theredgear" target="_blank">Created by RedGear - BETA v0.8</a>
+        </div>
+        <div id="objective-info"></div>
+        <div id="image-description"></div>
+        <div class="buttons">
+            <button id="back-button">◄</button>
+            <button id="win-button" disabled>WIN</button>
+            <button id="spin-animation-button">SPIN</button>
+            <button id="loss-button" disabled>LOSS</button>
+            <button id="forward-button">►</button>
+        </div>
+
+        <div class="difficulty-buttons">
+            <button id="toggle-normal" class="toggle-button on">NORMAL</button>
+            <button id="toggle-heroic" class="toggle-button on">HEROIC</button>
+            <button id="toggle-legendary" class="toggle-button on">LEGENDARY</button>
+            <button id="toggle-mythic" class="toggle-button on">MYTHIC</button>
+        </div>
+        <div class="save-load">
+            <input type="file" id="import-file" accept=".txt" style="display: none;">
+            <button id="undo-button">UNDO</button>
+            <button id="import-button">LOAD</button>
+            <button id="export-button">SAVE</button>
+            <button id="edit-button">EDIT</button>
+        </div>
+
+        <div class="lobby-code-section">
+            <button id="streamer-mode-button">STREAMER MODE</button>
+            <button id="lobby-code-button">OPEN LOBBY</button>
+            <button id="join-button">JOIN</button>
+        </div>
+
+        <div class="scoreboard">
+            <h2>Scoreboard</h2>
+            <ul id="scores"></ul>
+        </div>
+    </div>
+
+
+
+    <audio id="sound-effect-spin" src="assets/Sound Effects/Item Roulette.mp3"></audio>
+    <audio id="sound-effect-decide" src="assets/Sound Effects/Medal Decide.mp3"></audio>
+    <audio id="sound-effect-win" src="assets/Sound Effects/Record Win.mp3"></audio>
+    <audio id="sound-effect-loss" src="assets/Sound Effects/Record Loss.mp3"></audio>
+    <audio id="sound-effect-level-up" src="assets/Sound Effects/Level Up.mp3"></audio>
+    <audio id="sound-effect-level-down" src="assets/Sound Effects/Level Down.mp3"></audio>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Set volume for all sound effects to 0.2 (-20 dB)
+            const soundEffects = [
+                "sound-effect-spin",
+                "sound-effect-decide",
+                "sound-effect-win",
+                "sound-effect-loss",
+                "sound-effect-level-up",
+                "sound-effect-level-down"
+            ];
+            soundEffects.forEach(id => {
+                const audioElement = document.getElementById(id);
+                if (audioElement) {
+                    audioElement.volume = 0.2;
+                }
+
+                const triggerShineAnimation = () => {
+                    const slideshowImage = document.getElementById("slideshow-image");
+                    slideshowImage.classList.add("shine-animation");
+                    setTimeout(() => {
+                        slideshowImage.classList.remove("shine-animation");
+                    }, 1000); // Duration of the shine animation
+                };
+
+                setInterval(triggerShineAnimation, 30000); // Trigger the shine animation every 30 seconds
+
+                // Manually trigger the shine animation on hover
+                const slideshowImage = document.getElementById("slideshow-image");
+                slideshowImage.addEventListener("mouseenter", triggerShineAnimation);
+
+                // Generate random lobby code
+                const generateLobbyCode = () => {
+                    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                    let result = '';
+                    for (let i = 0; i < 6; i++) {
+                        result += characters.charAt(Math.floor(Math.random() * characters.length));
+                    }
+                    return result;
+                };
+
+            });
+
+            const images = [
+                // Normal Medals
+                {
+                    name: "Back Smack",
+                    description: "Kill an enemy by hitting them from behind with melee",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Back Smack.png"
+                },
+                {
+                    name: "Bodyguard",
+                    description: "Save 5 allies by killing their attacker",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Bodyguard.png"
+                },
+                {
+                    name: "Bomber",
+                    description: "Kill 5 enemies with launchers",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Bomber.png"
+                },
+                {
+                    name: "Boxer",
+                    description: "Kill 5 enemies with melee",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Boxer.png"
+                },
+                {
+                    name: "Breacher",
+                    description: "Kill 5 enemies with SMG weapons",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Breacher.png"
+                },
+                {
+                    name: "Chain Reaction",
+                    description: "Kill an enemy with a shock chain",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Chain Reaction.png"
+                },
+                {
+                    name: "Dogfight",
+                    description: "Destroy an enemy aircraft while in one yourself",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Dogfight.png"
+                },
+                {
+                    name: "Driver",
+                    description: "Kill 5 enemies with ground vehicles",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Driver.png"
+                },
+                {
+                    name: "Driving Spree",
+                    description: "Earn 5 Driver Assists without dying",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Driving Spree.png"
+                },
+                {
+                    name: "Flyin High",
+                    description: "Achieve a massive jump in a fully-loaded vehicle",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Flyin High.png"
+                },
+                {
+                    name: "From the Grave",
+                    description: "Kill an enemy after you die",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/From the Grave.png"
+                },
+                {
+                    name: "Grenadier",
+                    description: "Kill 5 enemies with grenades",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Grenadier.png"
+                },
+                {
+                    name: "Guardian Angel",
+                    description: "Save an ally's life from far away",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Guardian Angel.png"
+                },
+                {
+                    name: "Gunner",
+                    description: "Kill 5 enemies with mounted turrets",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Gunner.png"
+                },
+                {
+                    name: "Gunslinger",
+                    description: "Kill 5 enemies with pistols",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Gunslinger.png"
+                },
+                {
+                    name: "Harpoon",
+                    description: "Grapple a distant enemy",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Harpoon.png"
+                },
+                {
+                    name: "Heavy",
+                    description: "Kill 5 enemies with detached turrets",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Heavy.png"
+                },
+                {
+                    name: "Kill Joy",
+                    description: "End an enemy's killing spree",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Kill Joy.png"
+                },
+                {
+                    name: "Kong",
+                    description: "Kill an enemy by throwing a Fusion Coil",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Kong.png"
+                },
+                {
+                    name: "Last Shot",
+                    description: "Kill an enemy with your magazine's last round",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Last Shot.png"
+                },
+                {
+                    name: "Marksman",
+                    description: "Kill 5 enemies with tactical rifles",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Marksman.png"
+                },
+                {
+                    name: "Mount Up",
+                    description: "Assemble a fully-loaded vehicle of 2+ allies after honking the horn",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Mount Up.png"
+                },
+                {
+                    name: "Odin's Raven",
+                    description: "Detect 3+ enemies with a single Threat Sensor",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Odins Raven.png"
+                },
+                {
+                    name: "Pilot",
+                    description: "Kill 5 enemies with aircraft",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Pilot.png"
+                },
+                {
+                    name: "Quick Draw",
+                    description: "Kill an enemy with a pistol moments after switching to it",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Quick Draw.png"
+                },
+                {
+                    name: "Reclaimer",
+                    description: "Hijack an enemy vehicle that was once yours",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Reclaimer.png"
+                },
+                {
+                    name: "Reversal",
+                    description: "Kill an enemy who attacked you first",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Reversal.png"
+                },
+                {
+                    name: "Rifleman",
+                    description: "Kill 5 enemies with assault rifles",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Rifleman.png"
+                },
+                {
+                    name: "Saboteur",
+                    description: "Destroy 5 enemy vehicles",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Saboteur.png"
+                },
+                {
+                    name: "Scattergunner",
+                    description: "Kill 5 enemies with shotguns",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Scattergunner.png"
+                },
+                {
+                    name: "Sharpshooter",
+                    description: "Kill 5 enemies with sniper rifles",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Sharpshooter.png"
+                },
+                {
+                    name: "Skyjack",
+                    description: "Hijack an enemy aircraft",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Skyjack.png"
+                },
+                {
+                    name: "Snipe",
+                    description: "Headshot an enemy with a Power sniper rifle",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Snipe.png"
+                },
+                {
+                    name: "Special Delivery",
+                    description: "Kill an enemy with a Man Cannon- or Grav Lift-boosted grenade",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Special Delivery.png"
+                },
+                {
+                    name: "Splatter",
+                    description: "Kill an enemy by hitting them with a vehicle",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Splatter.png"
+                },
+                {
+                    name: "Spotter",
+                    description: "Mark 5 enemies that are then killed",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Spotter.png"
+                },
+                {
+                    name: "Stick",
+                    description: "Kill an enemy by sticking them with a Plasma or Spike Grenade",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Stick.png"
+                },
+                {
+                    name: "Tanker",
+                    description: "Kill 5 enemies with siege vehicles",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Tanker.png"
+                },
+                {
+                    name: "Treasure Hunter",
+                    description: "Mark 3 Power weapons that are picked up by allies",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Treasure Hunter.png"
+                },
+                {
+                    name: "Warrior",
+                    description: "Kill 5 enemies with melee weapons",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Warrior.png"
+                },
+                {
+                    name: "Wheelman",
+                    description: "Earn 5 driver assists",
+                    winPoints: 1,
+                    lossPoints: -1,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Wheelman.png"
+                },
+                {
+                    name: "Wingman",
+                    description: "Earn 10 kill assists",
+                    winPoints: 2,
+                    lossPoints: -2,
+                    difficulty: "Normal",
+                    imageUrl: "assets/Normal/Wingman.png"
+                },
+                // Heroic Medals
+                {
+                    name: "Ballista",
+                    description: "Kill an enemy with a Skewer from far away",
+                    winPoints: 5,
+                    lossPoints: -5,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Ballista.png"
+                },
+                {
+                    name: "Bank Shot",
+                    description: "Kill an enemy with a ricochet",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Bank Shot.png"
+                },
+                {
+                    name: "Bulltrue",
+                    description: "Save yourself or an ally by interrupting an enemy's Energy Sword lunge",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Bulltrue.png"
+                },
+                {
+                    name: "Cluster Luck",
+                    description: "Kill 2+ enemies with a single grenade",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Cluster Luck.png"
+                },
+                {
+                    name: "Counter-snipe",
+                    description: "Headshot an enemy while you both are zoomed with Power sniper rifles",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Counter-snipe.png"
+                },
+                {
+                    name: "Death Race",
+                    description: "Splatter 2+ enemies with a single boost in a Ghost",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Death Race.png"
+                },
+                {
+                    name: "Double Kill",
+                    description: "Kill 2 enemies in quick succession",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Double Kill.png"
+                },
+                {
+                    name: "Fire & Forget",
+                    description: "Kill an enemy with an M41 SPNKr from far away",
+                    winPoints: 5,
+                    lossPoints: -5,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Fire and Forget.png"
+                },
+                {
+                    name: "Grapple-jack",
+                    description: "Grapple to and hijack an enemy vehicle",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Grapple-jack.png"
+                },
+                {
+                    name: "Hail Mary",
+                    description: "Kill an enemy with a grenade from far away",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Hail Mary.png"
+                },
+                {
+                    name: "Hold This",
+                    description: "Kill an enemy moments after dropping a weapon using your remaining gun",
+                    winPoints: 5,
+                    lossPoints: -5,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Hold This.png"
+                },
+                {
+                    name: "Killing Spree",
+                    description: "Kill 5 enemies without dying",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Killing Spree.png"
+                },
+                {
+                    name: "Mind the Gap",
+                    description: "Kill an enemy by sending them to their doom with the Repulsor",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Mind the Gap.png"
+                },
+                {
+                    name: "Mounted & Loaded",
+                    description: "Earn a Double Kill with a stationary turret",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Mounted and Loaded.png"
+                },
+                {
+                    name: "Nade Shot",
+                    description: "Headshot an enemy moments after damaging them with a grenade",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Nade Shot.png"
+                },
+                {
+                    name: "No Scope",
+                    description: "Kill an enemy with a Power sniper rifle without zooming",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/No Scope.png"
+                },
+                {
+                    name: "Off the Rack",
+                    description: "Kill an enemy with a weapon moments after retrieving it from its spawn location",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Off the Rack.png"
+                },
+                {
+                    name: "Pancake",
+                    description: "Kill an enemy by flattening them with the Repulsor",
+                    winPoints: 5,
+                    lossPoints: -5,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Pancake.png"
+                },
+                {
+                    name: "Perfect",
+                    description: "Kill an enemy with a precision weapon with peak efficiency",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Perfect.png"
+                },
+                {
+                    name: "Pineapple Express",
+                    description: "Kill an enemy with a grenade as a passenger",
+                    winPoints: 5,
+                    lossPoints: -5,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Pineapple Express.png"
+                },
+                {
+                    name: "Ramming Speed",
+                    description: "Destroy an enemy vehicle by hitting it with your own",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Ramming Speed.png"
+                },
+                {
+                    name: "Shot Caller",
+                    description: "Headshot an enemy moments after Marking them",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Shot Caller.png"
+                },
+                {
+                    name: "Tag & Bag",
+                    description: "Kill 2+ enemies while revealing them with the Threat Sensor",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Tag and Bag.png"
+                },
+                {
+                    name: "Whiplash",
+                    description: "Kill a grappling enemy",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Whiplash.png"
+                },
+                {
+                    name: "Windshield Wiper",
+                    description: "Kill an enemy attempting to hijack a vehicle",
+                    winPoints: 4,
+                    lossPoints: -4,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Windshield Wiper.png"
+                },
+                {
+                    name: "Yard Sale",
+                    description: "Kill an enemy who had a Power weapon and a full inventory",
+                    winPoints: 3,
+                    lossPoints: -3,
+                    difficulty: "Heroic",
+                    imageUrl: "assets/Heroic/Yard Sale.png"
+                },
+                // Legendary Medals
+                {
+                    name: "360",
+                    description: "Kill an enemy by shooting them moments after spinning around",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/360.png"
+                },
+                {
+                    name: "Achilles Spine",
+                    description: "Kill an Overshielded enemy by hitting them from behind with melee",
+                    winPoints: 10,
+                    lossPoints: -10,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Achilles Spine.png"
+                },
+                {
+                    name: "Autopilot Engaged",
+                    description: "Kill the enemy driver of a moving vehicle with a Power sniper rifle",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Autopilot Engaged.png"
+                },
+                {
+                    name: "Boom Block",
+                    description: "Block an incoming projectile by deploying a Drop Wall",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Boom Block.png"
+                },
+                {
+                    name: "Deadly Catch",
+                    description: "Grapple a weapon or object to you and immediately kill an enemy with it",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Deadly Catch.png"
+                },
+                {
+                    name: "Death Cabbie",
+                    description: "Earn 10 Driver Assists without dying",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Death Cabbie.png"
+                },
+                {
+                    name: "Driveby",
+                    description: "Earn a Double Kill as a passenger",
+                    winPoints: 8,
+                    lossPoints: -8,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Driveby.png"
+                },
+                {
+                    name: "Grand Slam",
+                    description: "Kill 2+ enemies with a single Gravity Hammer swing",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Grand Slam.png"
+                },
+                {
+                    name: "Interlinked",
+                    description: "Shock 4 enemies with a single chain",
+                    winPoints: 10,
+                    lossPoints: -10,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Interlinked.png"
+                },
+                {
+                    name: "Killing Frenzy",
+                    description: "Kill 10 enemies without dying",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Killing Frenzy.png"
+                },
+                {
+                    name: "Nuclear Football",
+                    description: "Catch an enemy-thrown Fusion Coil",
+                    winPoints: 7,
+                    lossPoints: -7,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Nuclear Football.png"
+                },
+                {
+                    name: "Return to Sender",
+                    description: "Kill an enemy by deflecting their projectile",
+                    winPoints: 8,
+                    lossPoints: -8,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Return to Sender.png"
+                },
+                {
+                    name: "Sneak King",
+                    description: "Kill a camouflaged enemy by hitting them from behind with melee",
+                    winPoints: 10,
+                    lossPoints: -10,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Sneak King.png"
+                },
+                {
+                    name: "Street Sweeper",
+                    description: "Kill an enemy with the CQS48 Bulldog as a passenger",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Street Sweeper.png"
+                },
+                {
+                    name: "Triple Kill",
+                    description: "Kill 3 enemies in quick succession",
+                    winPoints: 6,
+                    lossPoints: -6,
+                    difficulty: "Legendary",
+                    imageUrl: "assets/Legendary/Triple Kill.png"
+                },
+                // Mythic Medals
+                {
+                    name: "Boogeyman",
+                    description: "Kill 30 enemies without dying",
+                    winPoints: 13,
+                    lossPoints: -13,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Boogeyman.png"
+                },
+                {
+                    name: "Demon",
+                    description: "Kill 40 enemies without dying",
+                    winPoints: 15,
+                    lossPoints: -15,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Demon.png"
+                },
+                {
+                    name: "Fastball",
+                    description: "Kill an enemy with the impact from a thrown grenade",
+                    winPoints: 15,
+                    lossPoints: -15,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Fastball.png"
+                },
+                {
+                    name: "Grim Reaper",
+                    description: "Kill 35 enemies without dying",
+                    winPoints: 14,
+                    lossPoints: -14,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Grim Reaper.png"
+                },
+                {
+                    name: "Immortal Chauffeur",
+                    description: "Earn 15 Driver Assists without dying",
+                    winPoints: 12,
+                    lossPoints: -12,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Immortal Chauffeur.png"
+                },
+                {
+                    name: "Killamanjaro",
+                    description: "Kill 7 enemies in quick succession",
+                    winPoints: 13,
+                    lossPoints: -13,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killamanjaro.png"
+                },
+                {
+                    name: "Killionaire",
+                    description: "Kill 10 enemies in quick succession",
+                    winPoints: 20,
+                    lossPoints: -20,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killionaire.png"
+                },
+                {
+                    name: "Killpocalypse",
+                    description: "Kill 9 enemies in quick succession",
+                    winPoints: 15,
+                    lossPoints: -15,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killpocalypse.png"
+                },
+                {
+                    name: "Killtacular",
+                    description: "Kill 5 enemies in quick succession",
+                    winPoints: 11,
+                    lossPoints: -11,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killtacular.png"
+                },
+                {
+                    name: "Killtastrophe",
+                    description: "Kill 8 enemies in quick succession",
+                    winPoints: 14,
+                    lossPoints: -14,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killtastrophe.png"
+                },
+                {
+                    name: "Killtrocity",
+                    description: "Kill 6 enemies in quick succession",
+                    winPoints: 12,
+                    lossPoints: -12,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Killtrocity.png"
+                },
+                {
+                    name: "Nightmare",
+                    description: "Kill 25 enemies without dying",
+                    winPoints: 12,
+                    lossPoints: -12,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Nightmare.png"
+                },
+                {
+                    name: "Ninja",
+                    description: "Kill an enemy by leaping over them and hitting them from behind with melee",
+                    winPoints: 13,
+                    lossPoints: -13,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Ninja.png"
+                },
+                {
+                    name: "Overkill",
+                    description: "Kill 4 enemies in quick succession",
+                    winPoints: 10,
+                    lossPoints: -10,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Overkill.png"
+                },
+                {
+                    name: "Rampage",
+                    description: "Kill 20 enemies without dying",
+                    winPoints: 11,
+                    lossPoints: -11,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Rampage.png"
+                },
+                {
+                    name: "Remote Detonation",
+                    description: "Kill an enemy by shooting a grenade",
+                    winPoints: 11,
+                    lossPoints: -11,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Remote Detonation.png"
+                },
+                {
+                    name: "Running Riot",
+                    description: "Kill 15 enemies without dying",
+                    winPoints: 10,
+                    lossPoints: -10,
+                    difficulty: "Mythic",
+                    imageUrl: "assets/Mythic/Running Riot.png"
+                },
+            ];
+
+            let currentMedal = null;
+            let playerScores = {};
+            let fireteamSkillRank = 0;
+            let lastAction = null;
+            let lastPoints = 0;
+            let currentBorderImageSrc = 'assets/Borders/unrated.png'; // Initialize current border image source
+            let lastButtonPress = null; // Tracks the last button press (win or loss)
+            let objectiveHistory = [];
+            let historyIndex = -1;
+            let fireteamState = "neutral"; // Track the current state of the fireteam-skill-rank
+
+            let lobbyCode = null;
+            let players = [];
+
+            // Generate random lobby code
+            const generateLobbyCode = () => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = '';
+                for (let i = 0; i < 6; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return result;
+            };
+
+            const lobbyCodeButton = document.getElementById("lobby-code-button");
+
+            // Handle Lobby Code button click
+            lobbyCodeButton.addEventListener("click", () => {
+                if (lobbyCodeButton.textContent === "OPEN LOBBY") {
+                    lobbyCode = generateLobbyCode();
+                    lobbyCodeButton.textContent = lobbyCode;
+                    navigator.clipboard.writeText(lobbyCode).then(() => {
+                        alert("Lobby code copied to clipboard!");
+                    }).catch(err => {
+                        console.error("Could not copy text: ", err);
+                    });
+                } else {
+                    navigator.clipboard.writeText(lobbyCodeButton.textContent).then(() => {
+                        alert("Lobby code copied to clipboard!");
+                    }).catch(err => {
+                        console.error("Could not copy text: ", err);
+                    });
+                }
+            });
+
+            // Handle Streamer Mode button click
+            document.getElementById("streamer-mode-button").addEventListener("click", () => {
+                if (lobbyCodeButton.style.color === "transparent") {
+                    lobbyCodeButton.style.color = "";
+                } else {
+                    lobbyCodeButton.style.color = "transparent";
+                }
+            });
+
+            // Handle Join button click
+            document.getElementById("join-button").addEventListener("click", () => {
+                const code = prompt("Enter the lobby code:");
+                if (code) {
+                    const playerName = prompt("Enter your name:");
+                    if (playerName) {
+                        joinLobby(code, playerName);
+                    }
+                }
+            });
+
+            // Join lobby function
+            const joinLobby = (code, playerName) => {
+                if (code === lobbyCode) {
+                    if (!players.includes(playerName)) {
+                        players.push(playerName);
+                        playerScores[playerName] = {
+                            score: 0,
+                            wins: 0,
+                            losses: 0
+                        };
+                        alert(`Joined lobby with code: ${code}`);
+                        displayScoreboard();
+                    } else {
+                        alert("Name already taken. Please choose a different name.");
+                    }
+                } else {
+                    alert("Invalid lobby code.");
+                }
+            };
+
+            const weightProbabilities = {
+                "Normal": 15,
+                "Heroic": 40,
+                "Legendary": 35,
+                "Mythic": 10
+            };
+
+            // Initialize difficulty settings
+            let enabledDifficulties = {
+                Normal: true,
+                Heroic: true,
+                Legendary: true,
+                Mythic: true
+            };
+
+            // Function to toggle difficulty
+            const toggleDifficulty = (difficulty) => {
+                enabledDifficulties[difficulty] = !enabledDifficulties[difficulty];
+                const button = document.getElementById(`toggle-${difficulty.toLowerCase()}`);
+                const onClass = `${difficulty.toLowerCase()}-on`;
+                const offClass = `${difficulty.toLowerCase()}-off`;
+
+                if (enabledDifficulties[difficulty]) {
+                    button.classList.add(onClass);
+                    button.classList.remove(offClass);
+                } else {
+                    button.classList.add(offClass);
+                    button.classList.remove(onClass);
+                }
+            };
+
+            // Attach event listeners to difficulty buttons
+            document.getElementById("toggle-normal").addEventListener("click", () => toggleDifficulty("Normal"));
+            document.getElementById("toggle-heroic").addEventListener("click", () => toggleDifficulty("Heroic"));
+            document.getElementById("toggle-legendary").addEventListener("click", () => toggleDifficulty("Legendary"));
+            document.getElementById("toggle-mythic").addEventListener("click", () => toggleDifficulty("Mythic"));
+
+            // Initial button state setup
+            document.getElementById("toggle-normal").classList.add('normal-on');
+            document.getElementById("toggle-heroic").classList.add('heroic-on');
+            document.getElementById("toggle-legendary").classList.add('legendary-on');
+            document.getElementById("toggle-mythic").classList.add('mythic-on');
+
+            const updateScoreboard = (player, points, actionType) => {
+                if (!playerScores[player]) playerScores[player] = {
+                    score: 0,
+                    wins: 0,
+                    losses: 0
+                };
+                const oldScore = playerScores[player].score;
+                const oldRank = fireteamSkillRank;
+
+                playerScores[player].score = Math.max(0, playerScores[player].score + points);
+                fireteamSkillRank = Math.max(0, fireteamSkillRank + points);
+                const newRank = fireteamSkillRank;
+
+                if (actionType === "win") {
+                    playerScores[player].wins++;
+                } else if (actionType === "loss") {
+                    playerScores[player].losses++;
+                } else if (actionType === "undo-win") {
+                    playerScores[player].wins = Math.max(0, playerScores[player].wins - 1);
+                } else if (actionType === "undo-loss") {
+                    playerScores[player].losses = Math.max(0, playerScores[player].losses - 1);
+                }
+
+                displayScoreboard();
+
+                console.log(`Player ${player}'s score changed: ${oldScore} sR → ${playerScores[player].score} sR`);
+                console.log(`Fireteam Skill Rank: ${fireteamSkillRank} sR`);
+
+                lastPoints = points;
+                lastAction = actionType;
+
+                updateBorderImage(oldRank, newRank);
+            };
+
+            const updateBorderImage = (oldRank, newRank) => {
+                let borderImageSrc;
+                if (newRank === 0) {
+                    borderImageSrc = 'assets/Borders/unrated.png';
+                } else if (newRank >= 1 && newRank <= 299) {
+                    borderImageSrc = 'assets/Borders/Bronze.png';
+                } else if (newRank >= 300 && newRank <= 599) {
+                    borderImageSrc = 'assets/Borders/Silver.png';
+                } else if (newRank >= 600 && newRank <= 899) {
+                    borderImageSrc = 'assets/Borders/Gold.png';
+                } else if (newRank >= 900 && newRank <= 1199) {
+                    borderImageSrc = 'assets/Borders/Platinum.png';
+                } else if (newRank >= 1200 && newRank <= 1499) {
+                    borderImageSrc = 'assets/Borders/Diamond.png';
+                } else if (newRank >= 1500) {
+                    borderImageSrc = 'assets/Borders/Onyx.png';
+                }
+
+                if (currentBorderImageSrc !== borderImageSrc) { // Only play sound if the image source is changing
+                    if (lastButtonPress === 'win') {
+                        document.getElementById("sound-effect-level-up").play();
+                    } else if (lastButtonPress === 'loss') {
+                        document.getElementById("sound-effect-level-down").play();
+                    }
+
+                    currentBorderImageSrc = borderImageSrc;
+                    document.getElementById("border-image").src = borderImageSrc;
+
+                    // Add animation class to .slideshow-container element
+                    const slideshowContainer = document.querySelector('.slideshow-container');
+                    slideshowContainer.classList.add('zoom-animation');
+                    // Remove the animation class after it ends
+                    slideshowContainer.addEventListener('animationend', () => {
+                        slideshowContainer.classList.remove('zoom-animation');
+                    }, {
+                        once: true
+                    });
+                }
+            };
+
+            const updateFireteamSkillRankBackground = (state) => {
+                const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
+                if (state === "win") {
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Score borders/Medal-Bounty-sR-Win.png')";
+                } else if (state === "loss") {
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Score borders/Medal-Bounty-sR-Loss.png')";
+                } else {
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Score borders/Medal-Bounty-sR')";
+                }
+                fireteamState = state; // Update the state
+            };
+
+            const displayScoreboard = () => {
+                const scoresElement = document.getElementById("scores");
+                scoresElement.innerHTML = "";
+                for (let player in playerScores) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${player}: ${playerScores[player].score} sR (Wins: ${playerScores[player].wins}, Losses: ${playerScores[player].losses})`;
+                    scoresElement.appendChild(listItem);
+                }
+                document.getElementById("fireteam-skill-rank").textContent = `${fireteamSkillRank} sR`; // Updated line
+                updateBorderImage(0, fireteamSkillRank); // Initialize border image
+            };
+
+            const spinWheel = () => {
+                const weightedMedals = [];
+                images.forEach(medal => {
+                    if (enabledDifficulties[medal.difficulty]) {
+                        for (let i = 0; i < weightProbabilities[medal.difficulty]; i++) {
+                            weightedMedals.push(medal);
+                        }
+                    }
+                });
+                if (weightedMedals.length === 0) {
+                    alert("No difficulties enabled. Please enable at least one difficulty.");
+                    enableSpinButton();
+                    return;
+                }
+                const randomIndex = Math.floor(Math.random() * weightedMedals.length);
+                currentMedal = weightedMedals[randomIndex];
+                document.getElementById("slideshow-image").src = currentMedal.imageUrl;
+                document.getElementById("objective-info").textContent = `${currentMedal.name} - [${currentMedal.difficulty}]`;
+                document.getElementById("image-description").textContent = currentMedal.description;
+                document.getElementById("win-button").textContent = `WIN (${currentMedal.winPoints} points)`;
+                document.getElementById("loss-button").textContent = `LOSS (${currentMedal.lossPoints} points)`;
+                updateSpinningRing(currentMedal.difficulty); // Update the spinning ring based on difficulty
+            };
+
+            const shuffleArray = array => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            };
+
+            const updateSpinningRing = (difficulty) => {
+                const spinningRing = document.getElementById("spinning-ring");
+                let imageUrl = '';
+                let speed = '';
+
+                switch (difficulty) {
+                    case 'Normal':
+                        imageUrl = 'assets/Spinning Rings/Normal-Inner.png';
+                        speed = '12s'; // Adjust speed as desired
+                        break;
+                    case 'Heroic':
+                        imageUrl = 'assets/Spinning Rings/Heroic-Inner.png';
+                        speed = '10s'; // Adjust speed as desired
+                        break;
+                    case 'Legendary':
+                        imageUrl = 'assets/Spinning Rings/Legendary-Inner.png';
+                        speed = '5s'; // Adjust speed as desired
+                        break;
+                    case 'Mythic':
+                        imageUrl = 'assets/Spinning Rings/Mythic-Inner.png';
+                        speed = '2s'; // Adjust speed as desired
+                        break;
+                }
+
+                spinningRing.src = imageUrl;
+                spinningRing.style.animationDuration = speed;
+            };
+
+            const preloadImages = images => images.map(image => {
+                const img = new Image();
+                img.src = image.imageUrl;
+                return img;
+            });
+
+            const disableWinLossButtons = () => {
+                document.getElementById("win-button").disabled = true;
+                document.getElementById("loss-button").disabled = true;
+            };
+
+            const enableWinLossButtons = () => {
+                document.getElementById("win-button").disabled = false;
+                document.getElementById("loss-button").disabled = false;
+            };
+
+            const disableSpinButton = () => {
+                document.getElementById("spin-animation-button").disabled = true;
+            };
+
+            const enableSpinButton = () => {
+                document.getElementById("spin-animation-button").disabled = false;
+            };
+
+            const addObjectiveToHistory = (medal) => {
+                if (objectiveHistory.length === 3) {
+                    objectiveHistory.shift();
+                }
+                objectiveHistory.push(medal);
+                historyIndex = objectiveHistory.length - 1;
+                updateNavigationButtons();
+            };
+
+            const updateNavigationButtons = () => {
+                document.getElementById("back-button").disabled = historyIndex <= 0;
+                document.getElementById("forward-button").disabled = historyIndex >= objectiveHistory.length - 1 || historyIndex === -1;
+            };
+
+            document.getElementById("spin-animation-button").addEventListener("click", () => {
+                document.getElementById("sound-effect-spin").play();
+                disableSpinButton(); // Disable spin button when spin is clicked
+                disableWinLossButtons(); // Disable win and loss buttons when spin is clicked
+                const shuffledImages = shuffleArray([...images]);
+                startSlideshowOrSpin(shuffledImages);
+            });
+
+            const startSlideshowOrSpin = images => {
+                let index = 0;
+                const slideshowImage = document.getElementById("slideshow-image");
+                const objectiveInfo = document.getElementById("objective-info");
+                const imageDescription = document.getElementById("image-description");
+
+                const intervalId = setInterval(() => {
+                    index = (index + 1) % images.length;
+                    slideshowImage.src = images[index].imageUrl;
+                }, 75);
+
+                setTimeout(() => {
+                    clearInterval(intervalId);
+                    document.getElementById('sound-effect-decide').play();
+                    spinWheel(); // Select the medal after 5 seconds
+                    objectiveInfo.textContent = `${currentMedal.name} - [${currentMedal.difficulty}]`;
+                    imageDescription.textContent = currentMedal.description;
+                    addObjectiveToHistory(currentMedal); // Add objective to history
+                    enableSpinButton(); // Re-enable the spin button after the delay
+                    enableWinLossButtons(); // Re-enable the win and loss buttons after the delay
+                }, 5000);
+            };
+
+            document.getElementById("win-button").addEventListener("click", () => {
+                if (currentMedal) {
+                    lastButtonPress = 'win'; // Set last button press to 'win'
+                    document.getElementById("sound-effect-win").play();
+                    updateScoreboard("Player 1", currentMedal.winPoints, "win");
+
+                    // Trigger zoom animation on fireteam-skill-rank
+                    const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
+                    fireteamSkillRankElement.classList.add('zoom-animation');
+                    fireteamSkillRankElement.addEventListener('animationend', () => {
+                        fireteamSkillRankElement.classList.remove('zoom-animation');
+                    }, {
+                        once: true
+                    });
+
+                    updateFireteamSkillRankBackground("win"); // Update background to win image
+                }
+            });
+
+            document.getElementById("loss-button").addEventListener("click", () => {
+                if (currentMedal) {
+                    lastButtonPress = 'loss'; // Set last button press to 'loss'
+                    document.getElementById("sound-effect-loss").play();
+                    updateScoreboard("Player 1", currentMedal.lossPoints, "loss");
+
+                    // Trigger zoom animation on fireteam-skill-rank
+                    const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
+                    fireteamSkillRankElement.classList.add('zoom-animation');
+                    fireteamSkillRankElement.addEventListener('animationend', () => {
+                        fireteamSkillRankElement.classList.remove('zoom-animation');
+                    }, {
+                        once: true
+                    });
+
+                    updateFireteamSkillRankBackground("loss"); // Update background to loss image
+                }
+            });
+
+            document.getElementById("undo-button").addEventListener("click", () => {
+                if (lastAction === "win") {
+                    updateScoreboard("Player 1", -lastPoints, "undo-win");
+                    playerScores["Player 1"].wins = Math.max(0, playerScores["Player 1"].wins - 1);
+                    console.log("Undo: Last win action undone.");
+                } else if (lastAction === "loss") {
+                    updateScoreboard("Player 1", -lastPoints, "undo-loss");
+                    playerScores["Player 1"].losses = Math.max(0, playerScores["Player 1"].losses - 1);
+                    console.log("Undo: Last loss action undone.");
+                } else {
+                    console.log("No action to undo.");
+                }
+                lastAction = null;
+                updateFireteamSkillRankBackground(previousFireteamState); // Reset background to the previous state
+            });
+
+            document.getElementById("edit-button").addEventListener("click", () => {
+                const newSkillRank = prompt("Enter the new Fireteam skill rank:");
+                if (newSkillRank !== null && !isNaN(newSkillRank)) {
+                    fireteamSkillRank = parseInt(newSkillRank);
+                    displayScoreboard(); // Update the displayed Fireteam skill rank
+                    console.log("Fireteam skill rank edited successfully.");
+                } else {
+                    console.log("Invalid input. Please enter a valid number.");
+                }
+            });
+
+            document.getElementById("export-button").addEventListener("click", () => {
+                const gameData = JSON.stringify({
+                    fireteamSkillRank,
+                    playerScores,
+                    currentMedal,
+                    fireteamState // Save the fireteam state
+                });
+                const blob = new Blob([gameData], {
+                    type: "text/plain"
+                });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = `medal_bounty_${new Date().toLocaleDateString().replaceAll("/", "")}.txt`;
+                a.click();
+            });
+
+            document.getElementById("import-file").addEventListener("change", event => {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = event => {
+                    const importedData = JSON.parse(event.target.result);
+                    fireteamSkillRank = importedData.fireteamSkillRank;
+                    playerScores = importedData.playerScores;
+                    currentMedal = importedData.currentMedal;
+                    fireteamState = importedData.fireteamState || "neutral"; // Load the fireteam state or default to neutral
+
+                    displayScoreboard();
+                    updateFireteamSkillRankBackground(fireteamState); // Update background based on loaded state
+
+                    if (currentMedal) {
+                        document.getElementById("slideshow-image").src = currentMedal.imageUrl;
+                        document.getElementById("objective-info").textContent = `${currentMedal.name} - [${currentMedal.difficulty}]`;
+                        document.getElementById("image-description").textContent = currentMedal.description;
+                        document.getElementById("win-button").textContent = `WIN (${currentMedal.winPoints} points)`;
+                        document.getElementById("loss-button").textContent = `LOSS (${currentMedal.lossPoints} points)`;
+                    }
+                    console.log("Game data imported successfully.");
+                };
+                reader.readAsText(file);
+            });
+
+            document.getElementById("import-button").addEventListener("click", () => {
+                document.getElementById("import-file").click();
+            });
+
+            window.addEventListener('beforeunload', event => {
+                if (fireteamSkillRank !== 0 || Object.keys(playerScores).length !== 0 || currentMedal !== null) {
+                    const confirmationMessage = 'Are you sure you want to leave? Your unsaved changes will be lost.';
+                    event.returnValue = confirmationMessage;
+                    return confirmationMessage;
+                }
+            });
+
+            // Function to select a random objective and display it
+            const selectRandomObjective = () => {
+                const randomIndex = Math.floor(Math.random() * images.length);
+                currentMedal = images[randomIndex];
+                document.getElementById("slideshow-image").src = currentMedal.imageUrl;
+                document.getElementById("objective-info").textContent = `${currentMedal.name} - [${currentMedal.difficulty}]`;
+                document.getElementById("image-description").textContent = currentMedal.description;
+                document.getElementById("win-button").textContent = `WIN (${currentMedal.winPoints} points)`;
+                document.getElementById("loss-button").textContent = `LOSS (${currentMedal.lossPoints} points)`;
+                updateSpinningRing(currentMedal.difficulty); // Update the spinning ring based on difficulty
+            };
+
+            // Initially disable win and loss buttons
+            disableWinLossButtons();
+            // Preload images and display the scoreboard
+            preloadImages(images);
+            displayScoreboard();
+            // Select a random objective on page load
+            selectRandomObjective();
+
+            document.getElementById("back-button").addEventListener("click", () => {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    const previousMedal = objectiveHistory[historyIndex];
+                    currentMedal = previousMedal;
+                    document.getElementById("slideshow-image").src = previousMedal.imageUrl;
+                    document.getElementById("objective-info").textContent = `${previousMedal.name} - [${previousMedal.difficulty}]`;
+                    document.getElementById("image-description").textContent = previousMedal.description;
+                    document.getElementById("win-button").textContent = `WIN (${previousMedal.winPoints} points)`;
+                    document.getElementById("loss-button").textContent = `LOSS (${previousMedal.lossPoints} points)`;
+                    updateSpinningRing(previousMedal.difficulty);
+                    updateNavigationButtons();
+                }
+            });
+
+            document.getElementById("forward-button").addEventListener("click", () => {
+                if (historyIndex < objectiveHistory.length - 1) {
+                    historyIndex++;
+                    const nextMedal = objectiveHistory[historyIndex];
+                    currentMedal = nextMedal;
+                    document.getElementById("slideshow-image").src = nextMedal.imageUrl;
+                    document.getElementById("objective-info").textContent = `${nextMedal.name} - [${nextMedal.difficulty}]`;
+                    document.getElementById("image-description").textContent = nextMedal.description;
+                    document.getElementById("win-button").textContent = `WIN (${nextMedal.winPoints} points)`;
+                    document.getElementById("loss-button").textContent = `LOSS (${nextMedal.lossPoints} points)`;
+                    updateSpinningRing(nextMedal.difficulty);
+                    updateNavigationButtons();
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

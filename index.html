@@ -8,7 +8,7 @@
     <style>
         /* CSS styles */
         body {
-            font-family: 'IndustryMedium', sans-serif;
+            font-family: 'Industry Medium', sans-serif;
         }
 
         .game-container {
@@ -25,7 +25,7 @@
             bottom: 25px;
             font-size: 21px;
             color: white;
-            background-image: url('assets/borders/NeutralButton.png');
+            background-image: url('assets/Borders/NeutralButton.png');
             /* Default background */
             background-size: cover;
             background-position: center;
@@ -51,12 +51,12 @@
             margin: 5px;
             padding: 10px 20px;
             font-size: 16px;
-            font-family: 'IndustryMedium', sans-serif;
+            font-family: 'Industry Medium', sans-serif;
         }
 
         .medal-display,
         .medal-description {
-            font-family: 'IndustryBook', sans-serif;
+            font-family: 'Industry Book', sans-serif;
         }
 
         .scoreboard h2 {
@@ -124,12 +124,12 @@
 
         @font-face {
             font-family: 'IndustryMedium';
-            src: url('assets/fonts/IndustryMedium.otf') format('opentype');
+            src: url('assets/Fonts/IndustryMedium.otf') format('opentype');
         }
 
         @font-face {
             font-family: 'IndustryBook';
-            src: url('assets/fonts/IndustryBook.otf') format('opentype');
+            src: url('assets/Fonts/IndustryBook.otf') format('opentype');
         }
 
 
@@ -265,7 +265,7 @@
             margin: 5px;
             padding: 10px 20px;
             font-size: 16px;
-            font-family: 'IndustryMedium', sans-serif;
+            font-family: 'Industry Medium', sans-serif;
         }
 
     </style>
@@ -1383,11 +1383,11 @@
             const updateFireteamSkillRankBackground = (state) => {
                 const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
                 if (state === "win") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/WinButton.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/Borders/WinButton.png')";
                 } else if (state === "loss") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/LossButton.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/Borders/LossButton.png')";
                 } else {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/NeutralButton.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/Borders/NeutralButton.png')";
                 }
                 fireteamState = state; // Update the state
             };

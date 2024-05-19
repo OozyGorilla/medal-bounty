@@ -25,7 +25,7 @@
             bottom: 25px;
             font-size: 21px;
             color: white;
-            background-image: url('assets/borders/Medal-Bounty-sR.png');
+            background-image: url('assets/borders/Neutral-Button.png');
             /* Default background */
             background-size: cover;
             background-position: center;
@@ -1383,11 +1383,11 @@
             const updateFireteamSkillRankBackground = (state) => {
                 const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
                 if (state === "win") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR-Win.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Win-Button.png')";
                 } else if (state === "loss") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR-Loss.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Loss-Button.png')";
                 } else {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Neutral-Button.png')";
                 }
                 fireteamState = state; // Update the state
             };

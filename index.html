@@ -25,7 +25,7 @@
             bottom: 25px;
             font-size: 21px;
             color: white;
-            background-image: url('assets/borders/Buttons/Medal-Bounty-sR.png');
+            background-image: url('assets/borders/Medal-Bounty-sR.png');
             /* Default background */
             background-size: cover;
             background-position: center;
@@ -131,6 +131,7 @@
             font-family: 'Industry Book';
             src: url('assets/fonts/Industry-Book.otf') format('opentype');
         }
+
 
         /* New CSS rule to resize the slideshow image */
         .slideshow-container {
@@ -1382,11 +1383,11 @@
             const updateFireteamSkillRankBackground = (state) => {
                 const fireteamSkillRankElement = document.getElementById("fireteam-skill-rank");
                 if (state === "win") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Buttons/Medal-Bounty-sR-Win.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR-Win.png')";
                 } else if (state === "loss") {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Buttons/Medal-Bounty-sR-Loss.png')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR-Loss.png')";
                 } else {
-                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Buttons/Medal-Bounty-sR')";
+                    fireteamSkillRankElement.style.backgroundImage = "url('assets/borders/Medal-Bounty-sR')";
                 }
                 fireteamState = state; // Update the state
             };

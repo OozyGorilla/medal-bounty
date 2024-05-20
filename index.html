@@ -318,15 +318,12 @@
         </div>
     </div>
 
-
-
     <audio id="sound-effect-spin" src="assets/Sound Effects/Item Roulette.mp3"></audio>
     <audio id="sound-effect-decide" src="assets/Sound Effects/Medal Decide.mp3"></audio>
     <audio id="sound-effect-win" src="assets/Sound Effects/Record Win.mp3"></audio>
     <audio id="sound-effect-loss" src="assets/Sound Effects/Record Loss.mp3"></audio>
     <audio id="sound-effect-level-up" src="assets/Sound Effects/Level Up.mp3"></audio>
     <audio id="sound-effect-level-down" src="assets/Sound Effects/Level Down.mp3"></audio>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -344,32 +341,21 @@
                 if (audioElement) {
                     audioElement.volume = 0.2;
                 }
-
-                const triggerShineAnimation = () => {
-                    const slideshowImage = document.getElementById("slideshow-image");
-                    slideshowImage.classList.add("shine-animation");
-                    setTimeout(() => {
-                        slideshowImage.classList.remove("shine-animation");
-                    }, 1000); // Duration of the shine animation
-                };
-
-                setInterval(triggerShineAnimation, 30000); // Trigger the shine animation every 30 seconds
-
-                // Manually trigger the shine animation on hover
-                const slideshowImage = document.getElementById("slideshow-image");
-                slideshowImage.addEventListener("mouseenter", triggerShineAnimation);
-
-                // Generate random lobby code
-                const generateLobbyCode = () => {
-                    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                    let result = '';
-                    for (let i = 0; i < 6; i++) {
-                        result += characters.charAt(Math.floor(Math.random() * characters.length));
-                    }
-                    return result;
-                };
-
             });
+
+            const triggerShineAnimation = () => {
+                const slideshowImage = document.getElementById("slideshow-image");
+                slideshowImage.classList.add("shine-animation");
+                setTimeout(() => {
+                    slideshowImage.classList.remove("shine-animation");
+                }, 1000); // Duration of the shine animation
+            };
+
+            setInterval(triggerShineAnimation, 30000); // Trigger the shine animation every 30 seconds
+
+            // Manually trigger the shine animation on hover
+            const slideshowImage = document.getElementById("slideshow-image");
+            slideshowImage.addEventListener("mouseenter", triggerShineAnimation);
 
             const images = [
                 // Normal Medals
@@ -1584,7 +1570,7 @@
                     console.log("No action to undo.");
                 }
                 lastAction = null;
-                updateFireteamSkillRankBackground(previousFireteamState); // Reset background to the previous state
+                updateFireteamSkillRankBackground(fireteamState); // Reset background to the previous state
             });
 
             document.getElementById("edit-button").addEventListener("click", () => {
